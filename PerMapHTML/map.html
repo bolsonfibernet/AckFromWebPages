@@ -1,0 +1,16 @@
+#version	"1.4"
+#title		"${mapname}"
+#alt_title	"Map"
+#template	"!templatemap.html"
+
+<div id="mapcontents">
+<MAP NAME="imap" id="imap">
+${include:/${httpdocument}/document/main/*imagemap.html}
+</MAP>
+
+<div style="position:relative; ${css_style_map_div}">
+<img id="mapbg" style="position:absolute; ${css_style_map_bg}" src="/${httpdocument}/document/main/*mapbg">
+<img id="mapfg" style="position:absolute; z-index: 1; ${css_style_map_fg}" src="/${httpdocument}/document/main/*map.${imagesuffix}" border="0" usemap="#imap">
+</div>
+</div>
+<a href="${webserverurl}${httpdocument}/${httpclass}/${httpinstance}/maplist.kml">View this map in Google Earth</a>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+  <Document>
+    <name>${mapname}</name>
+	<Style id="document">
+<!-- 		<ListStyle> -->
+<!-- 			<listItemType>checkHideChildren</listItemType> -->
+<!-- 		</ListStyle> -->
+	</Style>
+	<Style id="normal">
+	  <IconStyle>
+		<scale>0.3</scale>
+	    <Icon>
+		  <href>${webserverurl}~image/network.png</href>
+		</Icon>
+ 	  </IconStyle>
+	  <LineStyle>
+		  <color>ffffffff</color>
+		  <width>8</width>
+	  </LineStyle>
+	</Style>
+	<Style id="normaledge">
+	  <LineStyle>
+		  <color>ffffffff</color>
+		  <width>1</width>
+	  </LineStyle>
+	</Style>
+	<Style id="devicestatus1">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_unknown_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus2">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_okay_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus3">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_warning_ack_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus4">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_warning_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus5">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_alarm_ack_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus6">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_alarm_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus7">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_critical_ack_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus8">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_critical_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus9">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_down_ack_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<Style id="devicestatus10">
+	  <IconStyle>
+	    <Icon>
+		  <href>${webserverurl}~image/status_down_16.png</href>
+		</Icon>
+ 	  </IconStyle>
+	</Style>
+	<styleUrl>#document</styleUrl>
+	${devicelist_kml}
+  </Document>
+</kml>

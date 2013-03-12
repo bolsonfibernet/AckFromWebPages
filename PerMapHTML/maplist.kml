@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+<NetworkLink>
+  <name>${mapname}</name>
+  <Link>
+    <href>${webserverurl}${httpdocument}/${httpclass}/${httpinstance}/maplist_detail.kml</href>
+	<refreshMode>onInterval</refreshMode>
+	<refreshInterval>300</refreshInterval>
+  </Link>
+</NetworkLink>
+</kml>
