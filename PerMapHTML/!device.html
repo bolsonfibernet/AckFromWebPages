@@ -1,1 +1,125 @@
-#version	"1.0"#title		"${devicename}"<TABLE BORDER=0><TR><TD bgcolor="#FFFF99"><PRE>${include:*popuptext.html}</PRE></TD></TR></TABLE>
+#version	"1.3"
+#title		"${devicename}"
+
+<!-- 
+Enhanced !device.html page - requires InterMapper 5.2
+
+The page shows the device's Status Window. It also takes advantage of the HTTP API to acknowledge
+(basic) the device and to supply text for the Acknowledge message. That text is entered into an
+HTTP form: clicking the Ack button sends the POST to InterMapper.
+
+The ack_form is only shown if the logged-in user has administrator rights (as determined by the 
+${ifadmin:xxx} macro.) If they're not an admin, they can look at the status window 
+but not ack the device.
+
+The UpdateAction() function modifies the action parameter for the form by appending the contents of 
+the ack_text text field. NB the "BOGUS_URL_WILL_BE_REPLACED.html" in the form's Action= will be 
+replaced by the UpdateAction() function.
+
+In addition, the form uses the ack_focus() function to provide remove the grey, italicized default 
+text when the customer clicks the ack_text field.
+
+Finally, the page runs the reload_if_needed() script whenever the page loads. This checks whether 
+the page's URL (actually, the window.location) contains '*acknowledge.cgi', and if it does, it forces 
+the page to be replaced with the !device.html URL so it can be refreshed.
+
+Also removed yellow background and added a grey border for the Status Window.
+15 Jan 2010 -reb
+-->
+
+<table border=0 cellpadding=0 cellspacing=0>
+<tr>
+	<!-- Status Window with grey border around it -->
+	<td style="background-color:#ffffff; border: solid 2px #808080; padding:10px;">
+		<!-- start of *popuptext.html -->
+		<pre>${include:*popuptext.html}</pre>
+		<!-- end of *popuptext.html -->
+	</td>
+	<td width="10"> <!-- a narrow spacer column -->
+		&nbsp;
+	</td>
+	<td valign="top">  
+		<div id='ackform'> <!-- the acknowledgement text and a submit button -->
+			<b>Basic Acknowledgement:</b><br/>
+			
+			<form method='POST' action='BOGUS-URL-WILL-BE-REPLACED.html' name='ack_form' id='ack_form'> 
+			<input type='text' id="ack_text" name='ack_text' onfocus='ack_focus(this)' 
+				style='width:256px;color:#808080;font-style:italic;' alt='Ack Message' 
+				size='40'  >
+			<!-- <input type='submit' value='Ack'> -->
+			<input type='submit' value='Ack' onClick='return UpdateAction();'> 
+			</form>
+			<!-- Logged in as: ${httpuserid} -->
+		</div>
+		<a href="/${httpdocument}/document/_/!index.html">Back to ${mapname} map</a><br />
+		<!-- Doc: ${httpdocument} <br /> Class: ${httpclass} <br /> Instance: ${httpinstance} <br /> -->
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+
+// update the form's action= parameter to append the text 
+//   from the ack_text input field
+function UpdateAction()
+{
+	var url, path, cgi_name, ack_text;
+	url = ''; // web server URL not needed - goes back to same server
+	path = "${httpinstancepath}";
+	cgi_name = "/*acknowledge.cgi?message="
+	ack_text = escape(document.getElementById("ack_text").value);
+	
+	// alert(url+path+cgi_name+ack_text);
+	document.getElementById("ack_form").action = url+path+cgi_name+ack_text;
+	return true;
+}
+
+// This function clears the ack_text field when a customer focuses on it
+//   unless the field doesn't contain the default "Enter acknowedge text"
+function ack_focus(obj)
+{
+obj.style.color='';
+obj.style.fontStyle='';
+if (obj.value=="Enter acknowledge message")
+	{
+	obj.value='';
+	}
+}
+
+// force a reload of the !device.html page if the 
+//   window.location contains *acknowledge....
+function reload_if_needed()
+{
+	var aURL = window.location.toString();
+	var aPosition = aURL.indexOf('*acknowledge');
+
+	if (aPosition != -1)
+	{
+		aURL = aURL.substr(0,aPosition);
+		window.location.replace(aURL+'!device.html')
+	}
+	// alert(aURL);
+}
+</script>
+
+<script type="text/javascript">
+// initialization for when the page loads
+	reload_if_needed();  // switch URL from the *acknowledge.cgi to the !device.html
+	document.getElementById('ack_text').value = 'Enter acknowledge message';
+	if ('${ifadmin:ADMIN:NONADMIN}' != 'ADMIN') // hide form if not an admin
+	{
+		document.getElementById('ackform').style.display = 'none';
+	}
+</script>
+
+<!-- Tested with these acknowledge texts
+
+<empty string>
+12345
+Enter acknowledge message < > & ? \ * @ - _   . /
+
+Also tested with various permissions:
+
+Guest and logged-in but non-admin clients cannot ack, and do not see the form
+Admin's and clients in "FullWebAccess" group can see the form and ack it.
+-->
